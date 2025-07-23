@@ -62,7 +62,13 @@ removed from the original string.
 Returns the original string if index is out of bounds.
 */
 UStr removeAt(UStr s, int32_t index) {
-	// TODO: implement this
+	int32_t byteIndex = bi_of_cpi(s.contents, index);		
+	int length = utf8_codepoint_size(s.contents[byteIndex]);
+	for (int i = 0; i < s.bytes - byteIndex - length; i++) {
+		s.contents[byteIndex + i] = s.contents[byteIndex + i + length];
+	}
+	char buffer[1024];
+	strncpy(buffer, s.contents, byteIndex);
 
 }
 
