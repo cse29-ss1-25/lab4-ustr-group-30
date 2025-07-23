@@ -38,18 +38,17 @@ Returns an empty string on invalid range.
 */
 UStr substring(UStr s, int32_t start, int32_t end) {
 	// TODO: implement this
-	UStr subs;
-	if(start < 0 || end > len(s)) {
-		subs = new_ustr("");
-		return subs;
+	if(start < 0 || end > len(s) || end <= start) {
+		return new_ustr("");
 	} else {
 		int32_t bi_start = bi_of_cpi(s.contents, start);
 		int32_t bi_end = bi_of_cpi(s.contents, end);
-		char * temp = calloc(bi_end - bi_start, sizeof(char));
-		if (strncpy(temp, s.contents + bi_start, bi_end - bi_start) == NULL) {
+		char * temp = calloc((bi_end - bi_start + 1), sizeof(char));
+		temp = strncpy(temp, s.contents + bi_start, bi_end - bi_start);
+		if (temp == NULL) {
 			perror("strncpy error");
 		}
-		subs = new_ustr(temp);
+		UStr subs = new_ustr(temp);
 		free(temp);
 		return subs;
 	}
