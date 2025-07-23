@@ -101,7 +101,11 @@ Given a string s, return s reversed.
 Example: reverse("apples🍎 and bananas🍌") = "🍌sananab dna 🍎selppa")
 */
 UStr reverse(UStr s) {
-	//
+	UStr rev = new_ustr("");
+	for (int i = len(s) - 1; i >= 0; i--) {
+		rev = concat(rev, substring(s, i, i+1));
+	}
+	return rev;
 }
 
 
