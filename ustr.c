@@ -59,13 +59,18 @@ Given 2 strings s1 and s2, returns a string that is the result of
 concatenating s1 and s2. 
 */
 UStr concat(UStr s1, UStr s2) {
-	char buffer[1024];
-	strncpy(buffer, s1.contents, len(s1));
-	strncpy(buffer + len(s1), s2.contents, len(s2));
-	buffer[strlen(buffer)] = 0;
-	free(s1.contents);
-	free(s2.contents);
-	return new_ustr(buffer);
+	char * buffer = calloc(s1.bytes + s2.bytes + 1, 1);
+	buffer = strncpy(buffer, s1.contents, s1.bytes);
+	if (buffer == NULL) {
+		perror("strncpy error");
+	}
+	strncpy(buffer + s1.bytes, s2.contents, s2.bytes + 1);
+	if (buffer == NULL) {
+		perror("strncpy error");
+	}
+	UStr concats = new_ustr(buffer);
+	free(buffer);
+	return concats;
 }
 
 /*

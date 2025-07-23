@@ -35,7 +35,23 @@ containing all the strings in list joined by the separator.
 */
 UStr join(List* list, UStr separator) {
     // TODO: implement this
-
+	UStr result = new_ustr(list->data[0].contents);
+	char * prev = result.contents;
+	for(int i = 1; i < list->size; i++) {
+		result = concat(result, separator);
+		if (prev != NULL) {
+			free(prev);
+			prev = NULL;
+		}
+		prev = result.contents;
+		result = concat(result, list->data[i]);
+		if (prev != NULL) {
+			free(prev);
+			prev = NULL;
+		}
+		prev = result.contents;
+	}
+	return result;
 }
 
 /*
