@@ -93,7 +93,15 @@ Returns 1 on success, 0 if the index is invalid (out of bounds).
 */
 int8_t listRemoveAt(List* list, int32_t index) {
     // TODO: implement this
-
+	if (index < 0 || index > list->size) {
+		return 0;
+	}
+	free_ustr(list->data[index]);
+	for(int i = index; i < list->size; i++) {
+		*(list->data + i) = *(list->data + i + 1);
+	}
+	list->size--;
+	return 1;
 }
 
 /*
