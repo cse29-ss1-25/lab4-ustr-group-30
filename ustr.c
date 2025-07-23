@@ -46,8 +46,13 @@ Given 2 strings s1 and s2, returns a string that is the result of
 concatenating s1 and s2. 
 */
 UStr concat(UStr s1, UStr s2) {
-	// TODO: implement this
-
+	char buffer[1024];
+	strncpy(buffer, s1.contents, len(s1));
+	strncpy(buffer + len(s1), s2.contents, len(s2));
+	buffer[strlen(buffer)] = 0;
+	free(s1.contents);
+	free(s2.contents);
+	return new_ustr(buffer);
 }
 
 /*
