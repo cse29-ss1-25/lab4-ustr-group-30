@@ -76,14 +76,19 @@ removed from the original string.
 Returns the original string if index is out of bounds.
 */
 UStr removeAt(UStr s, int32_t index) {
+	if (index < 0 || index > s.codepoints) {
+		return s;
+	}
 	int32_t byteIndex = bi_of_cpi(s.contents, index);		
 	int length = utf8_codepoint_size(s.contents[byteIndex]);
-	for (int i = 0; i < s.bytes - byteIndex - length; i++) {
-		s.contents[byteIndex + i] = s.contents[byteIndex + i + length];
-	}
 	char buffer[1024];
 	strncpy(buffer, s.contents, byteIndex);
-
+	for (int i = 0; i < s.bytes - byteIndex - length; i++) {
+		buffer[byteIndex + i] = s.contents[byteIndex + i + length];
+	}
+	free(s.contents);
+	buffer[strlen(buffer)] = 0;
+	return new_ustr(buffer);
 }
 
 /*
@@ -92,8 +97,7 @@ Given a string s, return s reversed.
 Example: reverse("apples🍎 and bananas🍌") = "🍌sananab dna 🍎selppa")
 */
 UStr reverse(UStr s) {
-	// TODO: implement this
-
+	//
 }
 
 
