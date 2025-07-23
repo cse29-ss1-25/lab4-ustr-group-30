@@ -62,7 +62,28 @@ Returns 1 on success, 0 if the index is invalid (out of bounds).
 */
 int8_t insert(List* list, UStr s, int32_t index) {
     // TODO: implement this
-
+	if (index < 0 || index > list->size) {
+		return 0;
+	}
+	if (list->capacity == 0) {
+		list->data = malloc(sizeof(UStr));
+		if (list->data == NULL) {
+			perror("malloc error");
+		}
+		list->capacity++;
+	} else if (list->size == list->capacity) {
+		list->data = realloc(list->data, list->capacity * 2 * sizeof(UStr));
+		if (list->data == NULL) {
+			perror("realloc error");
+		}
+		list->capacity *= 2;
+	}
+	for(int i = index; i < list->size; i++) {
+		*(list->data + i + 1) = *(list->data + i);
+	}
+	list->data[index] = new_ustr(s.contents);
+	list->size++;
+	return 1;
 }
 
 /*
